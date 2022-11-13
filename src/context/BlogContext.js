@@ -1,23 +1,55 @@
-import React from "react";
+import createDataContext from "./createDataContext";
 
-const BlogContext = React.createContext();  // Creating a Context Object
+const blogReducer = (state, action) => {
 
-export const BlogProvider = ({ children }) => {
+    switch(action.type) {
 
-    const blogPosts = [
+        case "delete_blogpost":
 
-        {title: "Blog Post #1"},
-        {title: "Blog Post #2"}
-    ]
+            return state.filter(blogPost => blogPost.id !== action.payload);
 
-    return (
-        <BlogContext.Provider value={blogPosts}>
-            {children}     {/* "children" is actually the whole App */}
-        </BlogContext.Provider>
-    )
+        case "add_blogpost":
+
+            return(
+                    [
+                        ...state, 
+
+                        {
+                            id: Math.floor(Math.random() * 99999),
+
+                            title: `Blog Post #${state.length + 1}`
+                        }
+                    ]
+            )
+
+        default:
+            return state;
+    }
 };
 
-export default BlogContext;
+const addBlogPost = (dispatch) => {
+
+    return () => {
+        dispatch({type: "add_BlogPost"});
+    }
+
+};
+
+const deleteBlogPost = dispatch => {
+    
+    return (id) => {
+        dispatch({type: "delete_blogpost", payload: id})
+    };
+
+}
+
+export const {Context, Provider} = createDataContext(
+    
+    blogReducer, 
+    {addBlogPost, deleteBlogPost},
+    []
+);
+
 
 
 // If we were to send some information from the top level component to 
