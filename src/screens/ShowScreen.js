@@ -10,7 +10,9 @@ const ShowScreen = ({navigation}) => {
     // If the ID that was provided in to the screen is equal to the blogpost ID then we have 
     // found our blogpost, lets assign it to the "blogpost" variable and now we can show it on 
     // screen 
-    const blogPost = state.find(blogPost => blogPost.id === navigation.getParam("id"));
+    const blogPost = state.find(
+      blogPost => blogPost.id === navigation.getParam("id")
+    );
 
     return(
             <View>
@@ -23,7 +25,9 @@ const ShowScreen = ({navigation}) => {
 ShowScreen.navigationOptions = ({navigation}) => {
     return {
         headerRight: () => (
-          <TouchableOpacity onPress={() => navigation.navigate("Edit")}>
+          <TouchableOpacity onPress={() => 
+            navigation.navigate("Edit", navigation.getParam("id"))}
+          >
             <EvilIcons name="pencil" size={35} />
           </TouchableOpacity>
         ),
